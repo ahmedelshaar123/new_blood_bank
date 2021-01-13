@@ -23,6 +23,8 @@ Route::group(['prefix' => 'v1'], function (){
     Route::post('register', [AuthController::class, 'register']);
     Route::post('create-contact', [MainController::class, 'createContact']);
     Route::get('categories', [MainController::class, 'getCategories']);
+    Route::get('articles', [MainController::class, 'getArticles']);
     Route::get('governorates', [MainController::class, 'getGovernorates']);
+    Route::get('cities', [MainController::class, 'getCities']);
     Route::get('blood-types', [MainController::class, 'getBloodTypes']);
 });

@@ -16,6 +16,7 @@ class CreateClientsTable extends Migration {
 			$table->date('last_date_of_donation');
 			$table->string('phone')->unique();
 			$table->string('password');
+			$table->boolean('is_active')->default(1);
 			$table->string('pin_code')->nullable();
 			$table->string('api_token')->nullable();
 			$table->integer('city_id')->unsigned();

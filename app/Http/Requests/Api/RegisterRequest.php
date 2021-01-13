@@ -26,10 +26,10 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required|max:25',
             'email' => 'required|email|unique:clients',
-            'date_of_birth' => 'required|date|lt:today',
-            'last_date_of_donation' =>'required|date|before_or_equal:today',
+            'date_of_birth' => 'required|date',
+            'last_date_of_donation' =>'required|date',
             'phone' =>'required|digits_between:10,13|unique:clients',
-            'password' =>'required|min:6|',
+            'password' =>'required|min:6',
             'password_confirmation' =>'required|same:password',
             'city_id' =>'required|exists:cities,id',
             'blood_type_id' =>'required|exists:blood_types,id',
