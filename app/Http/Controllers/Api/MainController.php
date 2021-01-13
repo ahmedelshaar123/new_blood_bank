@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\City;
 use App\Models\Contact;
 use App\Models\Governorate;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -17,6 +18,23 @@ class MainController extends Controller
     public function createContact(ContactRequest $request) {
         $contact = Contact::create($request->all());
         return response()->json($contact, 200);
+    }
+
+    public function getGovernorates() {
+        $governorates = Governorate::latest()->paginate(10);
+        return response()->json($governorates, 200);
+    }
+
+    public function getCities(Request $request) {
+        $cities = City::with('governorate')->where(function ($query) use ($request){
+            if($request->has('governorate_id')) {
+                $query->where('governorate_id', $request->governorate_id);
+            }
+            if($request->has('keyword')) {
+                $query->where('name', 'like', '%' . $request->keyword . '%');
+            }
+        })->latest()->paginate(10);
+        return response()->json($cities, 200);
     }
 
     public function getCategories() {
@@ -37,25 +55,13 @@ class MainController extends Controller
         return response()->json($articles, 200);
     }
 
-    public function getGovernorates() {
-        $governorates = Governorate::latest()->paginate(10);
-        return response()->json($governorates, 200);
-    }
-
-    public function getCities(Request $request) {
-        $cities = City::with('governorate')->where(function ($query) use ($request){
-            if($request->has('governorate_id')) {
-                $query->where('governorate_id', $request->governorate_id);
-            }
-            if($request->has('keyword')) {
-                $query->where('name', 'like', '%' . $request->keyword . '%');
-            }
-        })->latest()->paginate(10);
-        return response()->json($cities, 200);
-    }
-
     public function getBloodTypes() {
         $bloodTypes = BloodType::latest()->paginate(10);
         return response()->json($bloodTypes, 200);
+    }
+
+    public function getSettings() {
+        $settings = Setting::latest()->paginate(10);
+        return response()->json($settings, 200);
     }
 }
