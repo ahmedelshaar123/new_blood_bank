@@ -17,6 +17,8 @@ class AuthController extends Controller
         $client = Client::create($request->all());
         $client->api_token = Str::random(60);
         $client->save();
+        $client->governorates()->attach($client->city->governorate_id);
+        $client->bloodTypes()->attach($client->blood_type_id);
         return response()->json($client->load('city', 'bloodType'), 200);
     }
 
