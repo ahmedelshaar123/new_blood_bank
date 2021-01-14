@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ArticleRequest;
 use App\Http\Requests\Api\ContactRequest;
 use App\Models\Article;
 use App\Models\BloodType;
@@ -11,6 +12,7 @@ use App\Models\City;
 use App\Models\Contact;
 use App\Models\Governorate;
 use App\Models\Setting;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -53,6 +55,15 @@ class MainController extends Controller
             }
         })->latest()->paginate(10);
         return response()->json($articles, 200);
+    }
+
+    public function getArticle(Request $request) {
+        $article = Article::findOrFail($request->article_id);
+        if($article) {
+            return response()->json($article, 200);
+        }else{
+            return response()->json('المقال غير موجود', 404);
+        }
     }
 
     public function getBloodTypes() {

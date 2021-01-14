@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\RegisterRequest;
+use App\Http\Requests\Api\ResetPasswordRequest;
+use App\Mail\ResetPassword;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -31,5 +34,29 @@ class AuthController extends Controller
         }else{
             return response()->json('بيانات الدخول غير صحيحة', 400);
         }
+    }
+
+    public function resetPassword(ResetPasswordRequest $request) {
+        if(Auth('client')->attempt(['phone'=>$request->phone, 'password' => $request->password])) {
+            Auth('client')->user()->pin_code = Str::random(4);
+            Auth('client')->user()->save();
+            Mail::to(Auth('client')->user()->email)
+                    ->send(new ResetPassword(Auth('client')->user()->pin_code));
+            return response()->json('برجاء مراجعة البريد الخاص بك', 200);
+        }else{
+            return response()->json('الهاتف غير مسجل لدينا', 400);
+        }
+
+//        $client = Client::where('phone', $request->phone)->first();
+//        if(!$client) {
+//            return response()->json('الهاتف غير مسجل لدينا', 400);
+//        }else{
+//            $client->pin_code = rand(1111, 9999);
+//            $client->save();
+//            Mail::to($client->email)
+//                ->send(new ResetPassword($client->pin_code));
+//
+//
+//        }
     }
 }

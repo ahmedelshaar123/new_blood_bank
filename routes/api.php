@@ -22,11 +22,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1'], function (){
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
+    Route::post('reset-password', [AuthController::class, 'resetPassword']);
     Route::post('create-contact', [MainController::class, 'createContact']);
     Route::get('governorates', [MainController::class, 'getGovernorates']);
     Route::get('cities', [MainController::class, 'getCities']);
     Route::get('categories', [MainController::class, 'getCategories']);
     Route::get('articles', [MainController::class, 'getArticles']);
+    Route::get('article', [MainController::class, 'getArticle']);
     Route::get('blood-types', [MainController::class, 'getBloodTypes']);
     Route::get('settings', [MainController::class, 'getSettings']);
 });
