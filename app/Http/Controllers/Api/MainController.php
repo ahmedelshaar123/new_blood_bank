@@ -10,6 +10,7 @@ use App\Models\BloodType;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\Contact;
+use App\Models\DonationRequest;
 use App\Models\Governorate;
 use App\Models\Setting;
 use http\Env\Response;
@@ -69,6 +70,27 @@ class MainController extends Controller
     public function getBloodTypes() {
         $bloodTypes = BloodType::latest()->paginate(10);
         return response()->json($bloodTypes, 200);
+    }
+
+    public function getDonationRequests(Request $request) {
+        $donationRequests = DonationRequest::with('city', 'bloodType')->where(function ($query) use ($request){
+            if($request->has('city_id')) {
+                $query->where('city_id', $request->city_id);
+            }
+            if($request->has('blood_type_id')) {
+                $query->where('blood_type_id', $request->blood_type_id);
+            }
+        })->latest()->paginate(10);
+        return response()->json($donationRequests, 200);
+    }
+
+    public function getDonationRequest(Request $request) {
+        $dontationRequest = DonationRequest::findOrFail($request->donation_request_id);
+        if($dontationRequest) {
+            return response()->json($dontationRequest, 200);
+        }else{
+            return response()->json('طلب التبرع غير موجود', 404);
+        }
     }
 
     public function getSettings() {

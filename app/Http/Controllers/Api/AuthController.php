@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\NewPasswordRequest;
 use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Requests\Api\ResetPasswordRequest;
 use App\Mail\ResetPassword;
@@ -46,17 +47,16 @@ class AuthController extends Controller
         }else{
             return response()->json('الهاتف غير مسجل لدينا', 400);
         }
+    }
 
-//        $client = Client::where('phone', $request->phone)->first();
-//        if(!$client) {
-//            return response()->json('الهاتف غير مسجل لدينا', 400);
-//        }else{
-//            $client->pin_code = rand(1111, 9999);
-//            $client->save();
-//            Mail::to($client->email)
-//                ->send(new ResetPassword($client->pin_code));
-//
-//
-//        }
+    public function newPassword(NewPasswordRequest $request) {
+        if(Auth('client')->attempt(['pin_code'=>$request->pin_code, 'password' => $request->password])) {
+            Auth('client')->user()->password = bcrypt($request->password);
+            Auth('client')->user()->pin_code = null;
+            Auth('client')->user()->save();
+            return response()->json('تم تغيير كلمة السر بنجاح', 200);
+        }else{
+            return response()->json('البيانات غير صحيحة', 400);
+        }
     }
 }

@@ -23,6 +23,7 @@ Route::group(['prefix' => 'v1'], function (){
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
     Route::post('reset-password', [AuthController::class, 'resetPassword']);
+    Route::post('new-password', [AuthController::class, 'newPassword']);
     Route::post('create-contact', [MainController::class, 'createContact']);
     Route::get('governorates', [MainController::class, 'getGovernorates']);
     Route::get('cities', [MainController::class, 'getCities']);
@@ -30,5 +31,7 @@ Route::group(['prefix' => 'v1'], function (){
     Route::get('articles', [MainController::class, 'getArticles']);
     Route::get('article', [MainController::class, 'getArticle']);
     Route::get('blood-types', [MainController::class, 'getBloodTypes']);
+    Route::get('donation-requests', [MainController::class, 'getDonationRequests']);
+    Route::get('donation-request', [MainController::class, 'getDonationRequest']);
     Route::get('settings', [MainController::class, 'getSettings']);
 });
