@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\NewPasswordRequest;
 use App\Http\Requests\Api\RegisterRequest;
+use App\Http\Requests\Api\RegisterTokenRequest;
+use App\Http\Requests\Api\RemoveTokenRequest;
 use App\Http\Requests\Api\ResetPasswordRequest;
 use App\Mail\ResetPassword;
 use App\Models\Client;
+use App\Models\Token;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -58,5 +61,15 @@ class AuthController extends Controller
         }else{
             return response()->json('البيانات غير صحيحة', 400);
         }
+    }
+
+    public function registerToken(RegisterTokenRequest $request) {
+        $token = $request->user()->tokens()->create($request->all());
+        return response()->json($token, 200);
+    }
+
+    public function removeToken(RemoveTokenRequest $request) {
+        Token::where('token', $request->token)->delete();
+        return response()->json('تم الحذف بنجاح', 200);
     }
 }

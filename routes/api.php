@@ -34,4 +34,9 @@ Route::group(['prefix' => 'v1'], function (){
     Route::get('donation-requests', [MainController::class, 'getDonationRequests']);
     Route::get('donation-request', [MainController::class, 'getDonationRequest']);
     Route::get('settings', [MainController::class, 'getSettings']);
+
+    Route::group(['middleware'=>'auth:client'], function() {
+        Route::post('register-token', [AuthController::class, 'registerToken']);
+        Route::post('remove-token', [AuthController::class, 'removeToken']);
+    });
 });
