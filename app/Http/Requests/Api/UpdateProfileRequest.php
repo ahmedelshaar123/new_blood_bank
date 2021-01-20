@@ -24,14 +24,16 @@ class UpdateProfileRequest extends FormRequest
      * @param Request $request
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
         return [
             'name' => 'required|max:25',
-            'email' => 'required|email',
+            'email' => Rule::unique('clients', 'email')->ignore($request->user()->id)
+                    ,'required,email',
             'date_of_birth' => 'required|date',
             'last_date_of_donation' =>'required|date',
-            'phone' => 'required|digits_between:10,13',
+            'phone' => Rule::unique('clients', 'phone')->ignore($request->user()->id)
+                    ,'required,digits_between:10,13',
             'password' =>'nullable|min:6',
             'password_confirmation' =>'nullable|same:password',
             'governorate_id' =>'required|exists:governorates,id',

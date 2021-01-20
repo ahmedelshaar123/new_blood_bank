@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6d2ba7c9-e153-41e7-b8ad-acc6dbc9a375" name="Default Changelist" comment="" />
+    <list default="true" id="6d2ba7c9-e153-41e7-b8ad-acc6dbc9a375" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/Api/UpdateProfileRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Api/UpdateProfileRequest.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -173,7 +176,7 @@
       <workItem from="1610959909366" duration="466000" />
       <workItem from="1610960660928" duration="126000" />
       <workItem from="1611140240598" duration="8320000" />
-      <workItem from="1611151912755" duration="1484000" />
+      <workItem from="1611151912755" duration="2284000" />
     </task>
     <servers />
   </component>
