@@ -9,6 +9,7 @@ use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Requests\Api\RegisterTokenRequest;
 use App\Http\Requests\Api\RemoveTokenRequest;
 use App\Http\Requests\Api\ResetPasswordRequest;
+use App\Http\Requests\Api\UpdateProfileRequest;
 use App\Mail\ResetPassword;
 use App\Models\Client;
 use App\Models\Token;
@@ -24,7 +25,7 @@ class AuthController extends Controller
         $client = Client::create($request->all());
         $client->api_token = Str::random(60);
         $client->save();
-        $client->governorates()->attach($client->city->governorate_id);
+        $client->governorates()->attach($request->governorate_id);
         $client->bloodTypes()->attach($client->blood_type_id);
         return response()->json($client->load('city', 'bloodType'), 200);
     }
@@ -38,6 +39,37 @@ class AuthController extends Controller
         }else{
             return response()->json('بيانات الدخول غير صحيحة', 400);
         }
+    }
+
+    public function profile(UpdateProfileRequest $request)
+    {
+        $request->user()->update($request->except('password'));
+
+
+        if ($request->has('password'))
+        {
+            $request->user()->password = bcrypt($request->password);
+        }
+
+        $request->user()->save();
+
+        if ($request->has('governorate_id'))
+        {
+
+            $request->user()->governorates()->detach($request->user()->city->governorate_id);
+            $request->user()->governorates()->attach($request->governorate_id);
+        }
+        if ($request->has('governorate_id'))
+        {
+
+            $request->user()->governorates()->detach($request->user()->city->governorate_id);
+            $request->user()->governorates()->attach($request->governorate_id);
+        }
+
+        $data = [
+            'client' => $request->user()->fresh()->load('city.governorate','blood_type')
+        ];
+        return apiResponse(1,'تم تحديث البيانات',$data);
     }
 
     public function resetPassword(ResetPasswordRequest $request) {

@@ -3,8 +3,10 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
-class RegisterRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,17 +23,18 @@ class RegisterRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
         return [
             'name' => 'required|max:25',
-            'email' => 'required|email|unique:clients,email',
+            'email' => Rule::unique('clients', 'email')->ignore($request->user()->id)
+                    ,'required|email',
             'date_of_birth' => 'required|date',
             'last_date_of_donation' =>'required|date',
-            'phone' =>'required|digits_between:10,13|unique:clients,phone',
-            'password' =>'required|min:6',
-            'password_confirmation' =>'required|same:password',
-            'governorate_id' =>'required|exists:governorates,id',
+            'phone' => Rule::unique('clients', 'phone')->ignore($request->user()->id)
+                    ,'required|digits_between:10,13',
+            'password' =>'nullable|min:6',
+            'password_confirmation' =>'nullable|same:password',
             'city_id' =>'required|exists:cities,id',
             'blood_type_id' =>'required|exists:blood_types,id',
         ];

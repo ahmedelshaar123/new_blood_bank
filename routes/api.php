@@ -36,6 +36,7 @@ Route::group(['prefix' => 'v1'], function (){
     Route::get('settings', [MainController::class, 'getSettings']);
 
     Route::group(['middleware'=>'auth:client'], function() {
+        Route::post('update-profile', [AuthController::class, 'updateProfile']);
         Route::post('register-token', [AuthController::class, 'registerToken']);
         Route::post('remove-token', [AuthController::class, 'removeToken']);
     });
