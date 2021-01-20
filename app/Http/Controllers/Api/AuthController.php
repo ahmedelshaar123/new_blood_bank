@@ -25,7 +25,7 @@ class AuthController extends Controller
         $client->save();
         $client->governorates()->attach($request->governorate_id);
         $client->bloodTypes()->attach($client->blood_type_id);
-        return response()->json($client->load('city', 'city.governorate', 'bloodType'), 200);
+        return response()->json($client->load('city', 'city.governorate', 'bloodType', 'governorates', 'bloodTypes'), 200);
     }
 
     public function login(LoginRequest $request) {
@@ -43,29 +43,27 @@ class AuthController extends Controller
     {
         $request->user()->update($request->except('password', 'governorate_id', 'blood_type_id'));
 
-
         if ($request->has('password'))
         {
             $request->user()->password = bcrypt($request->password);
+            $request->user()->save();
         }
-
-        $request->user()->save();
 
         if ($request->has('governorate_id'))
         {
 
-            $request->user()->governorates()->detach($request->user()->city->governorate_id);
+            $request->user()->governorates()->detach();
             $request->user()->governorates()->attach($request->governorate_id);
         }
         if ($request->has('blood_type_id'))
         {
 
-            $request->user()->governorates()->detach($request->user()->blood_type_id);
-            $request->user()->governorates()->attach($request->blood_type_id);
+            $request->user()->bloodTypes()->detach();
+            $request->user()->bloodTypes()->attach($request->blood_type_id);
         }
 
         $data = [
-            'client' => $request->user()->fresh()->load('city', 'city.governorate','blood_type')
+            'client' => $request->user()->fresh()->load('city', 'city.governorate','bloodType', 'governorates', 'bloodTypes')
         ];
         return response()->json($data, 200);
     }
