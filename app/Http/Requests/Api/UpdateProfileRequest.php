@@ -21,6 +21,7 @@ class UpdateProfileRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
+     * @param Request $request
      * @return array
      */
     public function rules(Request $request)
@@ -35,6 +36,7 @@ class UpdateProfileRequest extends FormRequest
                     ,'required|digits_between:10,13',
             'password' =>'nullable|min:6',
             'password_confirmation' =>'nullable|same:password',
+            'governorate_id' =>'required|exists:governorates,id',
             'city_id' =>'required|exists:cities,id',
             'blood_type_id' =>'required|exists:blood_types,id',
         ];

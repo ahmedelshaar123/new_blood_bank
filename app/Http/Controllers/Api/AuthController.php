@@ -13,8 +13,6 @@ use App\Http\Requests\Api\UpdateProfileRequest;
 use App\Mail\ResetPassword;
 use App\Models\Client;
 use App\Models\Token;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -27,7 +25,7 @@ class AuthController extends Controller
         $client->save();
         $client->governorates()->attach($request->governorate_id);
         $client->bloodTypes()->attach($client->blood_type_id);
-        return response()->json($client->load('city', 'bloodType'), 200);
+        return response()->json($client->load('city', 'city.governorate', 'bloodType'), 200);
     }
 
     public function login(LoginRequest $request) {
@@ -41,9 +39,9 @@ class AuthController extends Controller
         }
     }
 
-    public function profile(UpdateProfileRequest $request)
+    public function updateProfile(UpdateProfileRequest $request)
     {
-        $request->user()->update($request->except('password'));
+        $request->user()->update($request->except('password', 'governorate_id', 'blood_type_id'));
 
 
         if ($request->has('password'))
@@ -59,17 +57,17 @@ class AuthController extends Controller
             $request->user()->governorates()->detach($request->user()->city->governorate_id);
             $request->user()->governorates()->attach($request->governorate_id);
         }
-        if ($request->has('governorate_id'))
+        if ($request->has('blood_type_id'))
         {
 
-            $request->user()->governorates()->detach($request->user()->city->governorate_id);
-            $request->user()->governorates()->attach($request->governorate_id);
+            $request->user()->governorates()->detach($request->user()->blood_type_id);
+            $request->user()->governorates()->attach($request->blood_type_id);
         }
 
         $data = [
-            'client' => $request->user()->fresh()->load('city.governorate','blood_type')
+            'client' => $request->user()->fresh()->load('city', 'city.governorate','blood_type')
         ];
-        return apiResponse(1,'تم تحديث البيانات',$data);
+        return response()->json($data, 200);
     }
 
     public function resetPassword(ResetPasswordRequest $request) {
@@ -97,7 +95,7 @@ class AuthController extends Controller
 
     public function registerToken(RegisterTokenRequest $request) {
         $token = $request->user()->tokens()->create($request->all());
-        return response()->json($token, 200);
+        return response()->json($token->load('client'), 200);
     }
 
     public function removeToken(RemoveTokenRequest $request) {
