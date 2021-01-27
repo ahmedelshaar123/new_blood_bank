@@ -37,6 +37,11 @@ class MainController extends Controller
         return response()->json($notifications, 200);
     }
 
+    public function notificationsCount(Request $request) {
+        $count = $request->user()->notifications()->where('is_read', 0)->count();
+        return response()->json($count, 200);
+    }
+
     public function getGovernorates() {
         $governorates = Governorate::latest()->paginate(10);
         return response()->json($governorates, 200);

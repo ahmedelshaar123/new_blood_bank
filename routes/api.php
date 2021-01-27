@@ -42,5 +42,6 @@ Route::group(['prefix' => 'v1'], function (){
         Route::post('toggle-favourites', [MainController::class, 'toggleFavourites']);
         Route::get('my-favourites', [MainController::class, 'myFavourites']);
         Route::get('my-notifications', [MainController::class, 'myNotifications']);
+        Route::get('notifications-count', [MainController::class, 'notificationsCount']);
     });
 });
