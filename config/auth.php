@@ -50,7 +50,7 @@ return [
         ],
 
         'client' => [
-            'driver' => 'session',
+            'driver' => 'token',
             'provider' => 'clients',
         ],
     ],

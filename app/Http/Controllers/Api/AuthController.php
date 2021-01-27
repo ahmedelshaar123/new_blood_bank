@@ -52,13 +52,13 @@ class AuthController extends Controller
         if ($request->has('governorate_id'))
         {
 
-            $request->user()->governorates()->detach();
+            $request->user()->governorates()->detach($request->user()->city->governorate_id);
             $request->user()->governorates()->attach($request->governorate_id);
         }
         if ($request->has('blood_type_id'))
         {
 
-            $request->user()->bloodTypes()->detach();
+            $request->user()->bloodTypes()->detach($request->user()->blood_type_id);
             $request->user()->bloodTypes()->attach($request->blood_type_id);
         }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ContactRequest;
+use App\Http\Requests\Api\FavouriteRequest;
 use App\Models\Article;
 use App\Models\BloodType;
 use App\Models\Category;
@@ -19,6 +20,16 @@ class MainController extends Controller
     public function createContact(ContactRequest $request) {
         $contact = Contact::create($request->all());
         return response()->json($contact, 200);
+    }
+
+    public function toggleFavourites(FavouriteRequest $request) {
+        $toggle = Auth('client')->user()->articles()->with('categories')->toggle($request->article_id);
+        return response()->json($toggle, 200);
+    }
+
+    public function myFavourites(Request $request) {
+        $favourites = auth('client')->user()->articles()->with('categories')->latest()->paginate(10);
+        return response()->json($favourites, 200);
     }
 
     public function getGovernorates() {

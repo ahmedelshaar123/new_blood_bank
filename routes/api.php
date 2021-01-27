@@ -39,5 +39,7 @@ Route::group(['prefix' => 'v1'], function (){
         Route::post('update-profile', [AuthController::class, 'updateProfile']);
         Route::post('register-token', [AuthController::class, 'registerToken']);
         Route::post('remove-token', [AuthController::class, 'removeToken']);
+        Route::post('toggle-favourites', [MainController::class, 'toggleFavourites']);
+        Route::get('my-favourites', [MainController::class, 'myFavourites']);
     });
 });
