@@ -41,5 +41,6 @@ Route::group(['prefix' => 'v1'], function (){
         Route::post('remove-token', [AuthController::class, 'removeToken']);
         Route::post('toggle-favourites', [MainController::class, 'toggleFavourites']);
         Route::get('my-favourites', [MainController::class, 'myFavourites']);
+        Route::get('my-notifications', [MainController::class, 'myNotifications']);
     });
 });

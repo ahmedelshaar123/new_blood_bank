@@ -23,13 +23,18 @@ class MainController extends Controller
     }
 
     public function toggleFavourites(FavouriteRequest $request) {
-        $toggle = Auth('client')->user()->articles()->with('categories')->toggle($request->article_id);
+        $toggle = $request->user()->articles()->with('category')->toggle($request->article_id);
         return response()->json($toggle, 200);
     }
 
     public function myFavourites(Request $request) {
-        $favourites = auth('client')->user()->articles()->with('categories')->latest()->paginate(10);
+        $favourites = $request->user()->articles()->with('category')->latest()->paginate(10);
         return response()->json($favourites, 200);
+    }
+
+    public function myNotifications(Request $request) {
+        $notifications = $request->user()->notifications()->with('donationRequest')->latest()->paginate(10);
+        return response()->json($notifications, 200);
     }
 
     public function getGovernorates() {
