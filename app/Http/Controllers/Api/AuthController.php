@@ -76,14 +76,15 @@ class AuthController extends Controller
     }
 
     public function resetPassword(ResetPasswordRequest $request) {
-        if(Auth('client')->attempt(['phone'=>$request->phone, 'password' => $request->password])) {
-            Auth('client')->user()->pin_code = Str::random(4);
-            Auth('client')->user()->save();
-            Mail::to(Auth('client')->user()->email)
-                    ->send(new ResetPassword(Auth('client')->user()->pin_code));
-            return response()->json('برجاء مراجعة البريد الخاص بك', 200);
+        $client = Client::where('phone', $request->phone)->first();
+        if($client){
+            $code = Str::random(4);
+            $client->update(['pin_code' => $code]);
+            Mail::to($client->email)
+                ->send(new ResetPassword($client->pin_code));
+            return response()->json("برجاء فحص هاتفك", 200);
         }else{
-            return response()->json('الهاتف غير مسجل لدينا', 400);
+            return response()->json("البيانات غير صحيحة", 400);
         }
     }
 
