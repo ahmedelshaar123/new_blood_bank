@@ -12,6 +12,7 @@ class CreateNotificationsTable extends Migration {
 			$table->timestamps();
 			$table->string('title');
 			$table->text('body');
+			$table->boolean('is_read')->default(0);
 			$table->integer('donation_request_id')->unsigned();
 		});
 	}

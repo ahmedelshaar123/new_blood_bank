@@ -12,6 +12,7 @@ use App\Models\City;
 use App\Models\Contact;
 use App\Models\DonationRequest;
 use App\Models\Governorate;
+use App\Models\Notification;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
@@ -80,7 +81,7 @@ class MainController extends Controller
     public function getArticle(Request $request) {
         $article = Article::findOrFail($request->article_id);
         if($article) {
-            return response()->json($article, 200);
+            return response()->json($article->load('category'), 200);
         }else{
             return response()->json('المقال غير موجود', 404);
         }
@@ -106,7 +107,8 @@ class MainController extends Controller
     public function getDonationRequest(Request $request) {
         $dontationRequest = DonationRequest::findOrFail($request->donation_request_id);
         if($dontationRequest) {
-            return response()->json($dontationRequest, 200);
+            Notification::where('donation_request_id', $dontationRequest->id)->update(['is_read' => 1]);
+            return response()->json($dontationRequest->load('city', 'bloodType'), 200);
         }else{
             return response()->json('طلب التبرع غير موجود', 404);
         }
