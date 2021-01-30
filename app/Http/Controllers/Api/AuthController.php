@@ -13,6 +13,7 @@ use App\Http\Requests\Api\UpdateProfileRequest;
 use App\Mail\ResetPassword;
 use App\Models\Client;
 use App\Models\Token;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -29,13 +30,19 @@ class AuthController extends Controller
     }
 
     public function login(LoginRequest $request) {
-        if(Auth('client')->attempt(['phone'=>$request->phone,'password'=>$request->password])) {
-            if(Auth('client')->user()->is_active == 0) {
-                return response()->json('تم حظر الحساب', 400);
+        $client = Client::where('phone', $request->phone)->first();
+        if($client){
+            if(Hash::check($request->password, $client->password)) {
+                if ($client->is_active == 0) {
+                    return response()->json("تم حظر حسابك", 400);
+                } else {
+                    return response()->json($client->load('city', 'city.governorate', 'bloodType', 'governorates', 'bloodTypes'), 200);
+                }
+            } else {
+                return response()->json("بيانات الدخول غير صحيحة", 400);
             }
-            return response()->json('تم تسجيل الدخول بنجاح', 200);
         }else{
-            return response()->json('بيانات الدخول غير صحيحة', 400);
+            return response()->json("بيانات الدخول غير صحيحة", 400);
         }
     }
 

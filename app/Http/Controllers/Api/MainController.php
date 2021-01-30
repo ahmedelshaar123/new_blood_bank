@@ -107,7 +107,7 @@ class MainController extends Controller
     public function getDonationRequest(Request $request) {
         $dontationRequest = DonationRequest::findOrFail($request->donation_request_id);
         if($dontationRequest) {
-            Notification::where('donation_request_id', $dontationRequest->id)->update(['is_read' => 1]);
+            $request->user()->notifications()->update(['is_read' => 1]);
             return response()->json($dontationRequest->load('city', 'bloodType'), 200);
         }else{
             return response()->json('طلب التبرع غير موجود', 404);

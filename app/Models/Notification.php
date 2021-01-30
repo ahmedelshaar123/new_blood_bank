@@ -9,7 +9,7 @@ class Notification extends Model
 
     protected $table = 'notifications';
     public $timestamps = true;
-    protected $fillable = array('title', 'body', 'is_read', 'donation_request_id');
+    protected $fillable = array('title', 'body', 'donation_request_id');
 
     public function donationRequest()
     {
