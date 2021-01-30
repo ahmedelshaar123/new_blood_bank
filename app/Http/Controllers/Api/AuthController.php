@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\NewPasswordRequest;
+use App\Http\Requests\Api\NotificationsSettingRequest;
 use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Requests\Api\RegisterTokenRequest;
 use App\Http\Requests\Api\RemoveTokenRequest;
@@ -24,9 +25,7 @@ class AuthController extends Controller
         $client = Client::create($request->all());
         $client->api_token = Str::random(60);
         $client->save();
-        $client->governorates()->attach($request->governorate_id);
-        $client->bloodTypes()->attach($client->blood_type_id);
-        return response()->json($client->load('city', 'city.governorate', 'bloodType', 'governorates', 'bloodTypes'), 200);
+        return response()->json($client->load('city', 'city.governorate', 'bloodType'), 200);
     }
 
     public function login(LoginRequest $request) {
@@ -48,7 +47,7 @@ class AuthController extends Controller
 
     public function updateProfile(UpdateProfileRequest $request)
     {
-        $request->user()->update($request->except('password', 'governorate_id', 'blood_type_id'));
+        $request->user()->update($request->except('password'));
 
         if ($request->has('password'))
         {
@@ -56,21 +55,8 @@ class AuthController extends Controller
             $request->user()->save();
         }
 
-        if ($request->has('governorate_id'))
-        {
-
-            $request->user()->governorates()->detach($request->user()->city->governorate_id);
-            $request->user()->governorates()->attach($request->governorate_id);
-        }
-        if ($request->has('blood_type_id'))
-        {
-
-            $request->user()->bloodTypes()->detach($request->user()->blood_type_id);
-            $request->user()->bloodTypes()->attach($request->blood_type_id);
-        }
-
         $data = [
-            'client' => $request->user()->fresh()->load('city', 'city.governorate','bloodType', 'governorates', 'bloodTypes')
+            'client' => $request->user()->fresh()->load('city', 'city.governorate','bloodType')
         ];
         return response()->json($data, 200);
     }
@@ -108,5 +94,19 @@ class AuthController extends Controller
     public function removeToken(RemoveTokenRequest $request) {
         Token::where('token', $request->token)->delete();
         return response()->json('تم الحذف بنجاح', 200);
+    }
+
+    public function notificationsSettings(NotificationsSettingRequest $request){
+        if($request->has('governorate_id')){
+            $request->user()->governorates()->sync($request->governorate_id);
+
+        }
+
+        if($request->has('blood_type_id')){
+            $request->user()->bloodTypes()->sync($request->blood_type_id);
+        }
+
+        return response()->json(['governorate_id'=> $request->user()->governorates()->pluck('governorate_id')->toArray(),
+            'blood_type_id'=>$request->user()->bloodTypes()->pluck('blood_type_id')->toArray()], 200);
     }
 }
