@@ -82,17 +82,18 @@ class AuthController extends Controller
             $client->update(['pin_code' => $code]);
             Mail::to($client->email)
                 ->send(new ResetPassword($client->pin_code));
-            return response()->json("برجاء فحص هاتفك", 200);
+            return response()->json("برجاء فحص بريدك", 200);
         }else{
             return response()->json("البيانات غير صحيحة", 400);
         }
     }
 
     public function newPassword(NewPasswordRequest $request) {
-        if(Auth('client')->attempt(['pin_code'=>$request->pin_code, 'password' => $request->password])) {
-            Auth('client')->user()->password = bcrypt($request->password);
-            Auth('client')->user()->pin_code = null;
-            Auth('client')->user()->save();
+        $client = Client::where('pin_code', $request->pin_code)->where('pin_code', '!=', null)->first();
+        if($client) {
+            $client->password = bcrypt($request->password);
+            $client->pin_code = null;
+            $client->save();
             return response()->json('تم تغيير كلمة السر بنجاح', 200);
         }else{
             return response()->json('البيانات غير صحيحة', 400);
