@@ -122,7 +122,6 @@ class MainController extends Controller
             }
         }
         return response()->json($donationRequest, 200);
-
     }
 
     public function getDonationRequests(Request $request) {
