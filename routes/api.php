@@ -40,6 +40,7 @@ Route::group(['prefix' => 'v1'], function (){
         Route::post('remove-token', [AuthController::class, 'removeToken']);
         Route::post('toggle-favourites', [MainController::class, 'toggleFavourites']);
         Route::post('notifications-settings', [AuthController::class, 'notificationsSettings']);
+        Route::post('create-donation-request', [MainController::class, 'createDonationRequest']);
         Route::get('my-favourites', [MainController::class, 'myFavourites']);
         Route::get('donation-request', [MainController::class, 'getDonationRequest']);
         Route::get('my-notifications', [MainController::class, 'myNotifications']);

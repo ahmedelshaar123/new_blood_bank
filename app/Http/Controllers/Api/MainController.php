@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ContactRequest;
 use App\Http\Requests\Api\FavouriteRequest;
+use App\Http\Requests\Api\DonateRequest;
 use App\Models\Article;
 use App\Models\BloodType;
 use App\Models\Category;
@@ -12,12 +13,13 @@ use App\Models\City;
 use App\Models\Contact;
 use App\Models\DonationRequest;
 use App\Models\Governorate;
-use App\Models\Notification;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use App\Traits\FireBaseTrait;
 
 class MainController extends Controller
 {
+    use FireBaseTrait;
     public function createContact(ContactRequest $request) {
         $contact = Contact::create($request->all());
         return response()->json($contact, 200);
@@ -90,6 +92,47 @@ class MainController extends Controller
     public function getBloodTypes() {
         $bloodTypes = BloodType::latest()->paginate(10);
         return response()->json($bloodTypes, 200);
+    }
+
+    public function createDonationRequest(DonateRequest $request)
+    {
+        $donationRequest = $request->user()->donation_requests()->create($request->all())->load('city.governorate', 'blood_type');
+        //dd($donationRequest);
+        $clientsIds = $donationRequest->city->governorate->clients()
+            ->whereHas('blood_types', function ($q) use ($donationRequest) {
+                $q->where('blood_types.id', $donationRequest->blood_type_id);
+            })->pluck('clients.id')->toArray();
+
+
+
+        //dd($clientsIds);
+        $send = "";
+        if (count($clientsIds)) {
+            $notifications = $donationRequest->notifications()->create([
+                'title' => 'يوجد حالة تبرع قريبة منك',
+                'body' => optional($donationRequest->blood_type)->blood_type . "أحتاج متبرع لفصيلة", // optional??
+
+            ]);
+            //dd($notifications);
+            $notifications->clients()->attach($clientsIds);
+            $tokens = $request->user()->tokens()->where('token', '!=', null)->wherein('client_id', $clientsIds)->pluck('token')->toArray();
+            //return $tokens;
+            if (count($tokens)) {
+
+                $title = $notifications->title;
+                $body = $notifications->body;
+                $data = [
+                    'donation_request_id' => $donationRequest->id
+                ];
+                $send = $this->notifyByFirebase($title, $body, $tokens, $data);
+                info("firebase result: " . $send);
+                //  info("data: " . json_encode($data));
+            }
+
+            // dd($send);
+        }
+        return response()->json($donationRequest, 200);
+
     }
 
     public function getDonationRequests(Request $request) {

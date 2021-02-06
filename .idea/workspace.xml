@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6d2ba7c9-e153-41e7-b8ad-acc6dbc9a375" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/AuthController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/MainController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -145,7 +145,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../contrast" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -183,7 +183,10 @@
       <workItem from="1611738958305" duration="386000" />
       <workItem from="1611748368260" duration="9627000" />
       <workItem from="1611823557054" duration="1861000" />
-      <workItem from="1612008749837" duration="13839000" />
+      <workItem from="1612008749837" duration="13962000" />
+      <workItem from="1612106069808" duration="5152000" />
+      <workItem from="1612260261047" duration="57000" />
+      <workItem from="1612610556653" duration="929000" />
     </task>
     <servers />
   </component>
