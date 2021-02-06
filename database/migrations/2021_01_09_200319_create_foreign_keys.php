@@ -38,6 +38,11 @@ class CreateForeignKeys extends Migration {
 						->onDelete('cascade')
 						->onUpdate('cascade');
 		});
+		Schema::table('donation_requests', function(Blueprint $table) {
+			$table->foreign('client_id')->references('id')->on('clients')
+						->onDelete('cascade')
+						->onUpdate('cascade');
+		});
 		Schema::table('article_client', function(Blueprint $table) {
 			$table->foreign('article_id')->references('id')->on('articles')
 						->onDelete('cascade')
@@ -109,6 +114,9 @@ class CreateForeignKeys extends Migration {
 		});
 		Schema::table('donation_requests', function(Blueprint $table) {
 			$table->dropForeign('donation_requests_city_id_foreign');
+		});
+		Schema::table('donation_requests', function(Blueprint $table) {
+			$table->dropForeign('donation_requests_client_id_foreign');
 		});
 		Schema::table('article_client', function(Blueprint $table) {
 			$table->dropForeign('article_client_article_id_foreign');

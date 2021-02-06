@@ -25,9 +25,9 @@ class DonateRequest extends FormRequest
     {
         return [
             'name' => 'required|max:25',
-            'age' => 'required:digits_between:1,3',
+            'age' => 'required|digits_between:1,3',
             'blood_type_id' => 'required|exists:blood_types,id',
-            'bags_number' => 'required:digits|min:1',
+            'bags_number' => 'required|numeric|min:1',
             'hospital_name' => 'required|max:50',
             'hospital_address' => 'required|max:75',
             'lat' => 'nullable|numeric',

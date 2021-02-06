@@ -21,6 +21,7 @@ class CreateDonationRequestsTable extends Migration {
 			$table->text('notes')->nullable();
 			$table->integer('blood_type_id')->unsigned();
 			$table->integer('city_id')->unsigned();
+			$table->integer('client_id')->unsigned();
 		});
 	}
 

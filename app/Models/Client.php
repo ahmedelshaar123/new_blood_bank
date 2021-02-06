@@ -33,6 +33,11 @@ class Client extends Authenticatable
         return $this->hasMany('App\Models\Token');
     }
 
+    public function donationRequests()
+    {
+        return $this->hasMany('App\Models\DonationRequest');
+    }
+
     public function bloodTypes()
     {
         return $this->belongsToMany('App\Models\BloodType');

@@ -96,31 +96,26 @@ class MainController extends Controller
 
     public function createDonationRequest(DonateRequest $request)
     {
-        $donationRequest = $request->user()->donation_requests()->create($request->all())->load('city.governorate', 'blood_type');
-        //dd($donationRequest);
+        $donationRequest = $request->user()->donationRequests()->create($request->all())->load('city.governorate', 'blood_type');
         $clientsIds = $donationRequest->city->governorate->clients()
-            ->whereHas('blood_types', function ($q) use ($donationRequest) {
+            ->whereHas('bloodTypes', function ($q) use ($donationRequest) {
                 $q->where('blood_types.id', $donationRequest->blood_type_id);
             })->pluck('clients.id')->toArray();
 
-
-
-        //dd($clientsIds);
-        $send = "";
         if (count($clientsIds)) {
-            $notifications = $donationRequest->notifications()->create([
+            $notification = $donationRequest->notification()->create([
                 'title' => 'يوجد حالة تبرع قريبة منك',
-                'body' => optional($donationRequest->blood_type)->blood_type . "أحتاج متبرع لفصيلة", // optional??
+                'body' => optional($donationRequest->blood_type)->type . "أحتاج متبرع لفصيلة",
 
             ]);
-            //dd($notifications);
-            $notifications->clients()->attach($clientsIds);
+
+            $notification->clients()->attach($clientsIds);
             $tokens = $request->user()->tokens()->where('token', '!=', null)->wherein('client_id', $clientsIds)->pluck('token')->toArray();
-            //return $tokens;
+
             if (count($tokens)) {
 
-                $title = $notifications->title;
-                $body = $notifications->body;
+                $title = $notification->title;
+                $body = $notification->body;
                 $data = [
                     'donation_request_id' => $donationRequest->id
                 ];
