@@ -96,7 +96,8 @@ class MainController extends Controller
 
     public function createDonationRequest(DonateRequest $request)
     {
-        $donationRequest = $request->user()->donationRequests()->create($request->all())->load('city.governorate', 'blood_type');
+        $donationRequest = $request->user()->donationRequests()->create($request->all())->load('city', 'city.governorate', 'bloodType',
+                'client');
         $clientsIds = $donationRequest->city->governorate->clients()
             ->whereHas('bloodTypes', function ($q) use ($donationRequest) {
                 $q->where('blood_types.id', $donationRequest->blood_type_id);
@@ -105,26 +106,20 @@ class MainController extends Controller
         if (count($clientsIds)) {
             $notification = $donationRequest->notification()->create([
                 'title' => 'يوجد حالة تبرع قريبة منك',
-                'body' => optional($donationRequest->blood_type)->type . "أحتاج متبرع لفصيلة",
-
+                'body' => $donationRequest->bloodType->type . "أحتاج متبرع لفصيلة",
             ]);
 
             $notification->clients()->attach($clientsIds);
             $tokens = $request->user()->tokens()->where('token', '!=', null)->wherein('client_id', $clientsIds)->pluck('token')->toArray();
 
             if (count($tokens)) {
-
                 $title = $notification->title;
                 $body = $notification->body;
                 $data = [
                     'donation_request_id' => $donationRequest->id
                 ];
-                $send = $this->notifyByFirebase($title, $body, $tokens, $data);
-                info("firebase result: " . $send);
-                //  info("data: " . json_encode($data));
+                $this->notifyByFirebase($title, $body, $tokens, $data);
             }
-
-            // dd($send);
         }
         return response()->json($donationRequest, 200);
 
