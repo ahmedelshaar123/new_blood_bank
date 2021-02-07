@@ -118,7 +118,11 @@ class MainController extends Controller
                     'donation_request_id' => $donationRequest->id
                 ];
                 $this->notifyByFirebase($title, $body, $tokens, $data);
+            } else {
+                return response()->json("لا توجد رموز", 400);
             }
+        } else {
+            return response()->json("لا يوجد عملاء", 400);
         }
         return response()->json($donationRequest->load('city', 'city.governorate', 'bloodType', 'client'), 200);
     }
