@@ -97,8 +97,7 @@ class MainController extends Controller
 
     public function createDonationRequest(DonateRequest $request)
     {
-        $donationRequest = $request->user()->donationRequests()->create($request->all())->load('city', 'city.governorate', 'bloodType',
-                'client');
+        $donationRequest = $request->user()->donationRequests()->create($request->all());
         $clientsIds = $donationRequest->city->governorate->clients()
             ->whereHas('bloodTypes', function ($q) use ($donationRequest) {
                 $q->where('blood_types.id', $donationRequest->blood_type_id);
@@ -121,7 +120,7 @@ class MainController extends Controller
                 $this->notifyByFirebase($title, $body, $tokens, $data);
             }
         }
-        return response()->json($donationRequest, 200);
+        return response()->json($donationRequest->load('city', 'city.governorate', 'bloodType', 'client'), 200);
     }
 
     public function getDonationRequests(Request $request) {
