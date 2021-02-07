@@ -4,13 +4,6 @@
     <list default="true" id="6d2ba7c9-e153-41e7-b8ad-acc6dbc9a375" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/MainController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/Api/ContactRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Api/ContactRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/Api/DonateRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Api/DonateRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Client.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Client.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/DonationRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/DonationRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_09_200309_create_donation_requests_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_09_200309_create_donation_requests_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_09_200319_create_foreign_keys.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_09_200319_create_foreign_keys.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +144,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ferrucci-25-3" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -192,7 +185,8 @@
       <workItem from="1612008749837" duration="13962000" />
       <workItem from="1612106069808" duration="5152000" />
       <workItem from="1612260261047" duration="57000" />
-      <workItem from="1612610556653" duration="6037000" />
+      <workItem from="1612610556653" duration="8724000" />
+      <workItem from="1612690340564" duration="5324000" />
     </task>
     <servers />
   </component>

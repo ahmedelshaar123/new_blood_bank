@@ -14,6 +14,7 @@ use App\Models\Contact;
 use App\Models\DonationRequest;
 use App\Models\Governorate;
 use App\Models\Setting;
+use App\Models\Token;
 use Illuminate\Http\Request;
 use App\Traits\FireBaseTrait;
 
@@ -104,15 +105,14 @@ class MainController extends Controller
             })->pluck('clients.id')->toArray();
 
         if (count($clientsIds)) {
-            $notification = $donationRequest->notification()->create([
-                'title' => 'يوجد حالة تبرع قريبة منك',
-                'body' => $donationRequest->bloodType->type . "أحتاج متبرع لفصيلة",
-            ]);
-
-            $notification->clients()->attach($clientsIds);
-            $tokens = $request->user()->tokens()->where('token', '!=', null)->wherein('client_id', $clientsIds)->pluck('token')->toArray();
-
+            $tokens = Token::where('token', '!=', null)->wherein('client_id', $clientsIds)->pluck('token')->toArray();
             if (count($tokens)) {
+                $notification = $donationRequest->notification()->create([
+                    'title' => 'يوجد حالة تبرع قريبة منك',
+                    'body' => $donationRequest->bloodType->type . "أحتاج متبرع لفصيلة",
+                ]);
+
+                $notification->clients()->attach($clientsIds);
                 $title = $notification->title;
                 $body = $notification->body;
                 $data = [
