@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6d2ba7c9-e153-41e7-b8ad-acc6dbc9a375" name="Default Changelist" comment="" />
+    <list default="true" id="6d2ba7c9-e153-41e7-b8ad-acc6dbc9a375" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -141,7 +143,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ferrucci-25-3" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../alnaamy-hospital" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -183,7 +185,8 @@
       <workItem from="1612106069808" duration="5152000" />
       <workItem from="1612260261047" duration="57000" />
       <workItem from="1612610556653" duration="8724000" />
-      <workItem from="1612690340564" duration="7548000" />
+      <workItem from="1612690340564" duration="7753000" />
+      <workItem from="1612702979542" duration="20000" />
     </task>
     <servers />
   </component>
